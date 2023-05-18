@@ -15,6 +15,8 @@ import {
 } from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
 import { useState } from "react";
+import { useContext } from "react";
+import { ProductsContext } from "../context/ProductsContext";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -31,10 +33,11 @@ function Products() {
       return axiosInstance.get("products");
     }
   );
-  const [buttonText, setButtonText] = useState("Add to Basket");
 
-  const handleButtonClick = () => {
-    setButtonText("Item Added!");
+  const { basket, addToBasket } = useContext(ProductsContext);
+
+  const handleAddToBasket = () => {
+    addToBasket();
   };
 
   return (
@@ -44,7 +47,7 @@ function Products() {
           container
           rowSpacing={4}
           columnSpacing={{ xs: 1, sm: 2, md: 8 }}
-          style={{ marginTop: 20 }}
+          style={{ marginTop: 70 }}
         >
           {data &&
             data?.data.map((q) => (
@@ -79,8 +82,8 @@ function Products() {
                       <Typography gutterBottom variant="h5" component="div">
                         ${q.price}
                       </Typography>
-                      <Button variant="contained" onClick={handleButtonClick}>
-                        {buttonText}
+                      <Button variant="contained" onClick={handleAddToBasket}>
+                        Add to Basket
                       </Button>
                     </CardActions>
                   </div>

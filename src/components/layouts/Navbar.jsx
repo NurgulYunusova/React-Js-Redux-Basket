@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -7,9 +8,12 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import StoreIcon from "@mui/icons-material/Store";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { ProductsContext } from "../../context/ProductsContext";
 
 function Navbar() {
   const navigate = useNavigate();
+  const { basket, addToBasket } = useContext(ProductsContext);
 
   return (
     <>
@@ -17,7 +21,7 @@ function Navbar() {
         sx={{ flexGrow: 1 }}
         style={{ display: "flex", alignItems: "center" }}
       >
-        <AppBar position="static">
+        <AppBar position="fixed">
           <Toolbar>
             <Typography
               variant="h6"
@@ -37,7 +41,8 @@ function Navbar() {
                 navigate("/basket");
               }}
             >
-              <ShoppingCartIcon style={{ marginRight: 20, marginLeft: 20 }} />
+              <ShoppingCartIcon style={{ marginRight: 20, marginLeft: 20 }} />{" "}
+              {basket}
             </Button>
             <Button
               color="inherit"
