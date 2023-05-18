@@ -14,6 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
+import { useState } from "react";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -30,40 +31,59 @@ function Products() {
       return axiosInstance.get("products");
     }
   );
-  console.log(data);
+  const [buttonText, setButtonText] = useState("Add to Basket");
+
+  const handleButtonClick = () => {
+    setButtonText("Item Added!");
+  };
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
         <Grid
           container
-          rowSpacing={12}
-          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          style={{ marginTop: 30 }}
+          rowSpacing={4}
+          columnSpacing={{ xs: 1, sm: 2, md: 8 }}
+          style={{ marginTop: 20 }}
         >
           {data &&
             data?.data.map((q) => (
               <Grid item xs={4}>
                 <Card sx={{ height: "100%" }}>
-                  <CardMedia
-                    component="img"
-                    image={q.image}
-                    alt={q.title}
-                    sx={{ height: 300, objectFit: "contain" }}
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {q.title}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {q.description}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Typography gutterBottom variant="h5" component="div">
-                      ${q.price}
-                    </Typography>
-                    <Button variant="contained">Add Basket</Button>
-                  </CardActions>
+                  <div
+                    style={{
+                      padding: "10px",
+                    }}
+                  >
+                    <CardMedia
+                      component="img"
+                      image={q.image}
+                      alt={q.title}
+                      sx={{ height: 200, objectFit: "contain" }}
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div">
+                        {q.title}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {q.description}
+                      </Typography>
+                    </CardContent>
+                    <CardActions
+                      sx={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-around",
+                      }}
+                    >
+                      <Typography gutterBottom variant="h5" component="div">
+                        ${q.price}
+                      </Typography>
+                      <Button variant="contained" onClick={handleButtonClick}>
+                        {buttonText}
+                      </Button>
+                    </CardActions>
+                  </div>
                 </Card>
               </Grid>
             ))}
