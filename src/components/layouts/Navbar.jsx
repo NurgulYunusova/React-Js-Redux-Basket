@@ -41,15 +41,33 @@ function Navbar() {
                 navigate("/basket");
               }}
             >
-              <ShoppingCartIcon style={{ marginRight: 20, marginLeft: 20 }} />{" "}
+              <ShoppingCartIcon style={{ marginRight: 10, marginLeft: 10 }} />{" "}
               {basket}
             </Button>
             <Button
               color="inherit"
               style={{ display: "flex", alignItems: "center", gap: 5 }}
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              Log In
+            </Button>
+            <Button
+              color="inherit"
+              style={{ display: "flex", alignItems: "center", gap: 5 }}
+              onClick={() => {
+                navigate("/register");
+              }}
+            >
+              Register
+            </Button>
+            {/* <Button
+              color="inherit"
+              style={{ display: "flex", alignItems: "center", gap: 5 }}
             >
               Profile <PersonIcon />
-            </Button>
+            </Button> */}
           </Toolbar>
         </AppBar>
       </Box>

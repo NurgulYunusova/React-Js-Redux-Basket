@@ -10,11 +10,16 @@ export const ProductsProvider = ({ children }) => {
     setBasket((prevBasket) => prevBasket + 1);
   };
 
+  const removeFromBasket = () => {
+    setBasket((prevBasket) => prevBasket - 1);
+  };
+
   return (
     <ProductsContext.Provider
       value={{
         basket,
         addToBasket,
+        removeFromBasket,
       }}
     >
       {children}

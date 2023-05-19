@@ -17,14 +17,19 @@ import CardMedia from "@mui/material/CardMedia";
 import { useState } from "react";
 import { useContext } from "react";
 import { ProductsContext } from "../context/ProductsContext";
+import Modal from "@mui/material/Modal";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 function Products() {
   const { data, error, isLoading, isSuccess, refetch } = useQuery(
@@ -34,10 +39,23 @@ function Products() {
     }
   );
 
+  const [open, setOpen] = useState(false);
+  const [id, setId] = useState(null);
+  const [isClicked, setIsClicked] = useState(false);
+
   const { basket, addToBasket } = useContext(ProductsContext);
 
-  const handleAddToBasket = () => {
-    addToBasket();
+  const handleOpen = (id) => {
+    setId(id);
+    setOpen(true);
+  };
+
+  let itemData = data?.data.find((item) => item.id == id);
+
+  const handleClose = () => setOpen(false);
+
+  const actionToBasket = () => {
+    setIsClicked(!isClicked);
   };
 
   return (
@@ -46,12 +64,12 @@ function Products() {
         <Grid
           container
           rowSpacing={4}
-          columnSpacing={{ xs: 1, sm: 2, md: 8 }}
+          columnSpacing={{ xs: 1, sm: 2, md: 4 }}
           style={{ marginTop: 70 }}
         >
           {data &&
             data?.data.map((q) => (
-              <Grid item xs={4}>
+              <Grid item xs={2}>
                 <Card sx={{ height: "100%" }}>
                   <div
                     style={{
@@ -68,9 +86,6 @@ function Products() {
                       <Typography gutterBottom variant="h5" component="div">
                         {q.title}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {q.description}
-                      </Typography>
                     </CardContent>
                     <CardActions
                       sx={{
@@ -82,14 +97,40 @@ function Products() {
                       <Typography gutterBottom variant="h5" component="div">
                         ${q.price}
                       </Typography>
-                      <Button variant="contained" onClick={handleAddToBasket}>
-                        Add to Basket
+                      <Button variant="contained" onClick={actionToBasket}>
+                        {isClicked ? "Remove from basket" : "Add to basket"}
+                      </Button>
+                      <Button
+                        variant="contained"
+                        onClick={() => handleOpen(q.id)}
+                      >
+                        Show details
                       </Button>
                     </CardActions>
                   </div>
                 </Card>
               </Grid>
             ))}
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Typography
+                id="modal-modal-title"
+                variant="h6"
+                component="h2"
+                sx={{ fontWeight: "bold" }}
+              >
+                {itemData?.title}
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                {itemData?.description}
+              </Typography>
+            </Box>
+          </Modal>
         </Grid>
       </Box>
     </>

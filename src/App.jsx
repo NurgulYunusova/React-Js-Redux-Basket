@@ -7,9 +7,16 @@ import Login from "./pages/public/Login";
 import "./app.css";
 import Basket from "./pages/public/Basket";
 import Register from "./pages/public/Register";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 function App() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnMount: false,
+      },
+    },
+  });
 
   return (
     <>
@@ -25,6 +32,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/basket" element={<Basket />} />
         </Routes>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </>
   );
