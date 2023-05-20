@@ -2,7 +2,6 @@
 /* eslint-disable react/jsx-key */
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { axiosInstance } from "../network/axiosInstance";
 import { useQuery } from "react-query";
@@ -16,8 +15,11 @@ import {
 import CardMedia from "@mui/material/CardMedia";
 import { useState } from "react";
 import { useContext } from "react";
-import { ProductsContext } from "../context/ProductsContext";
+import { BasketContext } from "../context/BasketContext";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import Modal from "@mui/material/Modal";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const style = {
   position: "absolute",
@@ -40,10 +42,10 @@ function Products() {
   );
 
   const [open, setOpen] = useState(false);
-  const [id, setId] = useState(null);
-  const [isClicked, setIsClicked] = useState(false);
+  const [id, setId] = useState();
 
-  const { basket, addToBasket } = useContext(ProductsContext);
+  const { basketItems, addToBasket, removeFromBasket } =
+    useContext(BasketContext);
 
   const handleOpen = (id) => {
     setId(id);
@@ -54,84 +56,116 @@ function Products() {
 
   const handleClose = () => setOpen(false);
 
-  const actionToBasket = () => {
-    setIsClicked(!isClicked);
+  const handleAction = (product) => {
+    if (!basketItems.some((item) => item.id === product.id)) {
+      addToBasket(product);
+    } else removeFromBasket(product);
   };
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid
-          container
-          rowSpacing={4}
-          columnSpacing={{ xs: 1, sm: 2, md: 4 }}
-          style={{ marginTop: 70 }}
-        >
-          {data &&
-            data?.data.map((q) => (
-              <Grid item xs={2}>
-                <Card sx={{ height: "100%" }}>
-                  <div
-                    style={{
-                      padding: "10px",
-                    }}
-                  >
-                    <CardMedia
-                      component="img"
-                      image={q.image}
-                      alt={q.title}
-                      sx={{ height: 200, objectFit: "contain" }}
-                    />
-                    <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        {q.title}
-                      </Typography>
-                    </CardContent>
-                    <CardActions
-                      sx={{
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "space-around",
+      <Box sx={{ flexGrow: 1, padding: "40px" }}>
+        {isLoading ? (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <CircularProgress
+              style={{ width: 100, height: 100, margin: "300px" }}
+            />
+          </div>
+        ) : (
+          <Grid
+            container
+            rowSpacing={3}
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            style={{ marginTop: 70 }}
+          >
+            {data &&
+              data?.data.map((q) => (
+                <Grid item xs={3}>
+                  <Card sx={{ height: "100%" }}>
+                    <div
+                      style={{
+                        padding: "10px",
                       }}
                     >
-                      <Typography gutterBottom variant="h5" component="div">
-                        ${q.price}
-                      </Typography>
-                      <Button variant="contained" onClick={actionToBasket}>
-                        {isClicked ? "Remove from basket" : "Add to basket"}
-                      </Button>
-                      <Button
-                        variant="contained"
-                        onClick={() => handleOpen(q.id)}
+                      <CardMedia
+                        component="img"
+                        image={q.image}
+                        alt={q.title}
+                        sx={{ height: 200, objectFit: "contain" }}
+                      />
+                      <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                          {q.title}
+                        </Typography>
+                      </CardContent>
+                      <CardActions
+                        sx={{
+                          width: "100%",
+                          display: "flex",
+                          justifyContent: "space-around",
+                        }}
                       >
-                        Show details
-                      </Button>
-                    </CardActions>
-                  </div>
-                </Card>
-              </Grid>
-            ))}
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={style}>
-              <Typography
-                id="modal-modal-title"
-                variant="h6"
-                component="h2"
-                sx={{ fontWeight: "bold" }}
-              >
-                {itemData?.title}
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                {itemData?.description}
-              </Typography>
-            </Box>
-          </Modal>
-        </Grid>
+                        <Typography
+                          gutterBottom
+                          variant="h5"
+                          component="div"
+                          sx={{ color: "#EB455F", fontWeight: 700 }}
+                        >
+                          ${q.price}
+                        </Typography>
+                        <Button
+                          variant="contained"
+                          onClick={() => handleOpen(q.id)}
+                        >
+                          Show details
+                        </Button>
+                        <Button
+                          variant="contained"
+                          onClick={() => handleAction(q)}
+                        >
+                          {!basketItems.some((item) => item.id === q.id) ? (
+                            <span>
+                              Add to basket <AddShoppingCartIcon />
+                            </span>
+                          ) : (
+                            <span>
+                              Remove from basket <RemoveShoppingCartIcon />
+                            </span>
+                          )}
+                        </Button>
+                      </CardActions>
+                    </div>
+                  </Card>
+                </Grid>
+              ))}
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Typography
+                  id="modal-modal-title"
+                  variant="h6"
+                  component="h2"
+                  sx={{ fontWeight: "bold", color: "#3566b5" }}
+                >
+                  {itemData?.title}
+                </Typography>
+                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                  {itemData?.description}
+                </Typography>
+              </Box>
+            </Modal>
+          </Grid>
+        )}
       </Box>
     </>
   );

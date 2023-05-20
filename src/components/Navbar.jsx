@@ -9,29 +9,46 @@ import PersonIcon from "@mui/icons-material/Person";
 import StoreIcon from "@mui/icons-material/Store";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { ProductsContext } from "../../context/ProductsContext";
+import { BasketContext } from "../context/BasketContext";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { basket, addToBasket } = useContext(ProductsContext);
+  const { basketItems } = useContext(BasketContext);
 
   return (
     <>
       <Box
         sx={{ flexGrow: 1 }}
-        style={{ display: "flex", alignItems: "center" }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+        }}
       >
         <AppBar position="fixed">
-          <Toolbar>
+          <Toolbar
+            style={{
+              backgroundColor: "#2B3467",
+            }}
+          >
             <Typography
               variant="h6"
               component="div"
               sx={{ flexGrow: 1 }}
-              style={{ display: "flex", alignItems: "center", gap: 10 }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+              }}
             >
               <StoreIcon />
               E-commerce
-              <Button color="inherit" style={{ marginLeft: 40 }}>
+              <Button
+                color="inherit"
+                style={{ marginLeft: 40 }}
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
                 Products
               </Button>
             </Typography>
@@ -42,7 +59,7 @@ function Navbar() {
               }}
             >
               <ShoppingCartIcon style={{ marginRight: 10, marginLeft: 10 }} />{" "}
-              {basket}
+              {basketItems.length}
             </Button>
             <Button
               color="inherit"
