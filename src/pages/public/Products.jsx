@@ -3,7 +3,7 @@
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { axiosInstance } from "../network/axiosInstance";
+import { axiosInstance } from "../../network/axiosInstance";
 import { useQuery } from "react-query";
 import {
   Button,
@@ -15,7 +15,7 @@ import {
 import CardMedia from "@mui/material/CardMedia";
 import { useState } from "react";
 import { useContext } from "react";
-import { BasketContext } from "../context/BasketContext";
+import { BasketContext } from "../../context/BasketContext";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import Modal from "@mui/material/Modal";
@@ -90,18 +90,41 @@ function Products() {
                   <Card sx={{ height: "100%" }}>
                     <div
                       style={{
-                        padding: "10px",
+                        padding: "15px",
                       }}
                     >
                       <CardMedia
                         component="img"
                         image={q.image}
                         alt={q.title}
-                        sx={{ height: 200, objectFit: "contain" }}
+                        sx={{ height: 180, objectFit: "contain" }}
                       />
-                      <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
+                      <CardContent sx={{ padding: "10px" }}>
+                        <Typography
+                          gutterBottom
+                          variant="h6"
+                          component="div"
+                          sx={{
+                            textTransform: "uppercase",
+                            textAlign: "center",
+                            fontWeight: 500,
+                          }}
+                        >
                           {q.title}
+                        </Typography>
+                      </CardContent>
+                      <CardContent sx={{ padding: 0 }}>
+                        <Typography
+                          gutterBottom
+                          variant="h5"
+                          component="div"
+                          sx={{
+                            fontWeight: 700,
+                            textAlign: "center",
+                            margin: "0px",
+                          }}
+                        >
+                          ${q.price}
                         </Typography>
                       </CardContent>
                       <CardActions
@@ -111,31 +134,47 @@ function Products() {
                           justifyContent: "space-around",
                         }}
                       >
-                        <Typography
-                          gutterBottom
-                          variant="h5"
-                          component="div"
-                          sx={{ color: "#EB455F", fontWeight: 700 }}
-                        >
-                          ${q.price}
-                        </Typography>
                         <Button
                           variant="contained"
                           onClick={() => handleOpen(q.id)}
                         >
-                          Show details
+                          More details
                         </Button>
+                      </CardActions>
+                      <CardActions
+                        sx={{
+                          width: "100%",
+                          display: "flex",
+                          justifyContent: "space-around",
+                        }}
+                      >
                         <Button
                           variant="contained"
                           onClick={() => handleAction(q)}
                         >
                           {!basketItems.some((item) => item.id === q.id) ? (
-                            <span>
-                              Add to basket <AddShoppingCartIcon />
+                            <span
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 8,
+                                padding: 3,
+                              }}
+                            >
+                              <AddShoppingCartIcon />
+                              Add to basket
                             </span>
                           ) : (
-                            <span>
-                              Remove from basket <RemoveShoppingCartIcon />
+                            <span
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 8,
+                                padding: 3,
+                              }}
+                            >
+                              <RemoveShoppingCartIcon />
+                              Remove from basket
                             </span>
                           )}
                         </Button>
@@ -155,11 +194,18 @@ function Products() {
                   id="modal-modal-title"
                   variant="h6"
                   component="h2"
-                  sx={{ fontWeight: "bold", color: "#3566b5" }}
+                  sx={{
+                    fontWeight: "bold",
+                    color: "#3566b5",
+                    textAlign: "center",
+                  }}
                 >
                   {itemData?.title}
                 </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                <Typography
+                  id="modal-modal-description"
+                  sx={{ mt: 2, textAlign: "center" }}
+                >
                   {itemData?.description}
                 </Typography>
               </Box>

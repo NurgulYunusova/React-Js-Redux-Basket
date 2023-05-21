@@ -9,16 +9,7 @@ export const ProductsProvider = ({ children }) => {
     return storedBasketItems ? JSON.parse(storedBasketItems) : [];
   });
 
-  // const addToBasket = () => {
-  //   setBasket((prevBasket) => prevBasket + 1);
-  // };
-
-  // const removeFromBasket = () => {
-  //   setBasket((prevBasket) => prevBasket - 1);
-  // };
-
   const addToBasket = (product) => {
-    // setBasketItems([...basketItems, product]);
     if (!basketItems.some((item) => item.id === product.id)) {
       const updatedBasket = [...basketItems, product];
       setBasketItems(updatedBasket);
@@ -27,7 +18,6 @@ export const ProductsProvider = ({ children }) => {
   };
 
   const removeFromBasket = (product) => {
-    // setBasketItems(basketItems.filter((item) => item.id !== product.id));
     const updatedBasket = basketItems.filter((item) => item.id !== product.id);
     setBasketItems(updatedBasket);
     localStorage.setItem("basketItems", JSON.stringify(updatedBasket));

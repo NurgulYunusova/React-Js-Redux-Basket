@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-key */
 import { useContext } from "react";
 import { BasketContext } from "../../context/BasketContext";
@@ -12,8 +13,13 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 
 function Basket() {
-  const { basketItems, addToBasket, removeFromBasket, calculateTotalPrice } =
-    useContext(BasketContext);
+  const {
+    basketItems,
+    addToBasket,
+    removeFromBasket,
+    calculateTotalPrice,
+    clearBasket,
+  } = useContext(BasketContext);
 
   const handleAction = (product) => {
     if (!basketItems.some((item) => item.id === product.id)) {
@@ -73,7 +79,8 @@ function Basket() {
                               padding: 3,
                             }}
                           >
-                            Add to basket <AddShoppingCartIcon />
+                            <AddShoppingCartIcon />
+                            Add to basket
                           </span>
                         ) : (
                           <span
@@ -84,7 +91,8 @@ function Basket() {
                               padding: 3,
                             }}
                           >
-                            Remove from basket <RemoveShoppingCartIcon />
+                            <RemoveShoppingCartIcon />
+                            Remove from basket
                           </span>
                         )}
                       </Button>
@@ -94,6 +102,13 @@ function Basket() {
               </Grid>
             ))}
         </Grid>
+        {/* <Button
+          variant="contained"
+          sx={{ backgroundColor: "red" }}
+          onClick={() => clearBasket()}
+        >
+          Clear All
+        </Button> */}
         <Typography variant="h4">
           Total price: ${calculateTotalPrice()}
         </Typography>
