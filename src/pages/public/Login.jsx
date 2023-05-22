@@ -37,9 +37,12 @@ function Login() {
           (user) =>
             user.email == values.email && user.password == values.password
         );
+
         if (userExists) {
           navigate("/admin");
           return;
+        } else {
+          alert("Wrong email address or password!");
         }
       }
     },

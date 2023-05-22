@@ -18,10 +18,10 @@ function Register() {
       .max(50, "Maximum 50 character"),
     email: Yup.string()
       .required("Email field cannot be empty!")
-      .email("Invalid email address!"),
-    // .test("email", "Email must end with @code.edu.az", (value) => {
-    //   return value.endsWith("@code.edu.az");
-    // }),
+      .email("Invalid email address!")
+      .test("email", "Email must end with .com", (value) => {
+        return value.endsWith(".com");
+      }),
     gender: Yup.string().required("Gender field cannot be empty!"),
     password: Yup.string()
       .required("Password field cannot be empty!")

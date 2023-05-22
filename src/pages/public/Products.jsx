@@ -135,7 +135,7 @@ function Products() {
                         }}
                       >
                         <Button
-                          variant="contained"
+                          variant="outlined"
                           onClick={() => handleOpen(q.id)}
                         >
                           More details
