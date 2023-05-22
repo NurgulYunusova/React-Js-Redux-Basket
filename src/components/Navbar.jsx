@@ -5,7 +5,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import PersonIcon from "@mui/icons-material/Person";
 import StoreIcon from "@mui/icons-material/Store";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
@@ -79,12 +78,6 @@ function Navbar() {
             >
               Register
             </Button>
-            {/* <Button
-              color="inherit"
-              style={{ display: "flex", alignItems: "center", gap: 5 }}
-            >
-              Profile <PersonIcon />
-            </Button> */}
           </Toolbar>
         </AppBar>
       </Box>

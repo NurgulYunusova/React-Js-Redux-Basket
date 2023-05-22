@@ -94,10 +94,7 @@ function Admin() {
 
   const mutation = useMutation({
     mutationFn: async (params) => {
-      const { data } = await axiosInstance.put(
-        `https://fakestoreapi.com/products/${editId}`,
-        params
-      );
+      const { data } = await axiosInstance.put(`products/${editId}`, params);
       return data;
     },
     onSuccess: () => {
@@ -120,10 +117,7 @@ function Admin() {
 
   const mutationAdd = useMutation({
     mutationFn: async (params) => {
-      const { data } = await axiosInstance.post(
-        "https://fakestoreapi.com/products",
-        params
-      );
+      const { data } = await axiosInstance.post("products", params);
       return data;
     },
     onSuccess: () => {

@@ -102,16 +102,22 @@ function Basket() {
               </Grid>
             ))}
         </Grid>
-        {/* <Button
-          variant="contained"
-          sx={{ backgroundColor: "red" }}
-          onClick={() => clearBasket()}
-        >
-          Clear All
-        </Button> */}
+
         <Typography variant="h4">
           Total price: ${calculateTotalPrice()}
         </Typography>
+
+        {basketItems.length != 0 ? (
+          <Button
+            variant="contained"
+            sx={{ backgroundColor: "red" }}
+            onClick={() => clearBasket()}
+          >
+            Clear All
+          </Button>
+        ) : (
+          <></>
+        )}
       </Box>
     </>
   );
