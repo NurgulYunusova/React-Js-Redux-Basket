@@ -2,14 +2,19 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
-import { ProductsProvider } from "./context/BasketContext.jsx";
+// import { ProductsProvider } from "./context/BasketContext.jsx";
+import { createStore } from "redux";
+import basketReducer from "./reducers/basket.js";
+import { Provider } from "react-redux";
+
+const store = createStore(basketReducer);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ProductsProvider>
+    <Provider store={store}>
+      <BrowserRouter>
         <App />
-      </ProductsProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );

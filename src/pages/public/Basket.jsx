@@ -1,7 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-key */
-import { useContext } from "react";
-import { BasketContext } from "../../context/BasketContext";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -9,22 +7,16 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import { Button, CardActions } from "@mui/material";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
+import { useDispatch, useSelector } from "react-redux";
 
 function Basket() {
-  const {
-    basketItems,
-    addToBasket,
-    removeFromBasket,
-    calculateTotalPrice,
-    clearBasket,
-  } = useContext(BasketContext);
+  let basketProducts = useSelector((state) => state);
 
-  const handleAction = (product) => {
-    if (!basketItems.some((item) => item.id === product.id)) {
-      addToBasket(product);
-    } else removeFromBasket(product);
+  console.log(basketProducts);
+  let dispatch = useDispatch();
+  const remove = (id) => {
+    dispatch({ type: "REMOVE_FROM_BASKET", payload: id });
   };
 
   return (
@@ -36,8 +28,8 @@ function Basket() {
           columnSpacing={{ xs: 1, sm: 2, md: 4 }}
           style={{ marginTop: 70 }}
         >
-          {basketItems &&
-            basketItems.map((item) => (
+          {basketProducts &&
+            basketProducts.map((item) => (
               <Grid item xs={3}>
                 <Card sx={{ height: "100%" }}>
                   <div
@@ -68,33 +60,19 @@ function Basket() {
                     >
                       <Button
                         variant="contained"
-                        onClick={() => handleAction(item)}
+                        onClick={() => remove(item.id)}
                       >
-                        {!basketItems.some((q) => q.id === item.id) ? (
-                          <span
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 8,
-                              padding: 3,
-                            }}
-                          >
-                            <AddShoppingCartIcon />
-                            Add to basket
-                          </span>
-                        ) : (
-                          <span
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 8,
-                              padding: 3,
-                            }}
-                          >
-                            <RemoveShoppingCartIcon />
-                            Remove from basket
-                          </span>
-                        )}
+                        <span
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                            padding: 3,
+                          }}
+                        >
+                          <RemoveShoppingCartIcon />
+                          Remove from basket
+                        </span>
                       </Button>
                     </CardActions>
                   </div>
@@ -102,22 +80,6 @@ function Basket() {
               </Grid>
             ))}
         </Grid>
-
-        <Typography variant="h4">
-          Total price: ${calculateTotalPrice()}
-        </Typography>
-
-        {basketItems.length != 0 ? (
-          <Button
-            variant="contained"
-            sx={{ backgroundColor: "red" }}
-            onClick={() => clearBasket()}
-          >
-            Clear All
-          </Button>
-        ) : (
-          <></>
-        )}
       </Box>
     </>
   );

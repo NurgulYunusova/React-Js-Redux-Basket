@@ -7,12 +7,9 @@ import Button from "@mui/material/Button";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import StoreIcon from "@mui/icons-material/Store";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { BasketContext } from "../context/BasketContext";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { basketItems } = useContext(BasketContext);
 
   return (
     <>
@@ -58,7 +55,6 @@ function Navbar() {
               }}
             >
               <ShoppingCartIcon style={{ marginRight: 10, marginLeft: 10 }} />{" "}
-              {basketItems.length}
             </Button>
             <Button
               color="inherit"

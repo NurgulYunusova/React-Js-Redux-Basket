@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-key */
 import { styled } from "@mui/material/styles";
@@ -14,12 +15,9 @@ import {
 } from "@mui/material";
 import CardMedia from "@mui/material/CardMedia";
 import { useState } from "react";
-import { useContext } from "react";
-import { BasketContext } from "../../context/BasketContext";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import RemoveShoppingCartIcon from "@mui/icons-material/RemoveShoppingCart";
 import Modal from "@mui/material/Modal";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useDispatch } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -44,9 +42,6 @@ function Products() {
   const [open, setOpen] = useState(false);
   const [id, setId] = useState();
 
-  const { basketItems, addToBasket, removeFromBasket } =
-    useContext(BasketContext);
-
   const handleOpen = (id) => {
     setId(id);
     setOpen(true);
@@ -55,11 +50,14 @@ function Products() {
   let itemData = data?.data.find((item) => item.id == id);
 
   const handleClose = () => setOpen(false);
+  let dispatch = useDispatch();
 
-  const handleAction = (product) => {
-    if (!basketItems.some((item) => item.id === product.id)) {
-      addToBasket(product);
-    } else removeFromBasket(product);
+  const handleAddToBasket = (product) => {
+    dispatch({ type: "ADD_TO_BASKET", payload: product });
+  };
+
+  const handleRemoveToBasket = (id) => {
+    dispatch({ type: "REMOVE_FROM_BASKET", payload: id });
   };
 
   return (
@@ -150,33 +148,16 @@ function Products() {
                       >
                         <Button
                           variant="contained"
-                          onClick={() => handleAction(q)}
+                          onClick={() => handleAddToBasket(q)}
                         >
-                          {!basketItems.some((item) => item.id === q.id) ? (
-                            <span
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 8,
-                                padding: 3,
-                              }}
-                            >
-                              <AddShoppingCartIcon />
-                              Add to basket
-                            </span>
-                          ) : (
-                            <span
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 8,
-                                padding: 3,
-                              }}
-                            >
-                              <RemoveShoppingCartIcon />
-                              Remove from basket
-                            </span>
-                          )}
+                          Add to basket
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          color="error"
+                          onClick={() => handleRemoveToBasket(q.id)}
+                        >
+                          Remove from basket
                         </Button>
                       </CardActions>
                     </div>
